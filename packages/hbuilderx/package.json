@@ -13,6 +13,12 @@
     "url": "git+https://github.com/tomjs/hbuilderx.git",
     "directory": "packages/hbuilderx"
   },
+  "keywords": [
+    "hbuilderx",
+    "types",
+    "extension",
+    "webview"
+  ],
   "exports": {
     ".": {
       "import": {
