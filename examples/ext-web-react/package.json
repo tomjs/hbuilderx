@@ -91,7 +91,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint --fix"
   },
   "dependencies": {

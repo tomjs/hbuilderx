@@ -1,0 +1,43 @@
+{
+  "name": "@tomjs/hbuilderx-cli",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "为 HBuilderX 开发插件提供便利的 cli 工具，根据 package.json 中的 contributes 配置，为 hbuilderx 的命令、视图等 API 提供 id 提示",
+  "author": {
+    "name": "Tom Gao",
+    "email": "tom@tomgao.cc"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomjs/hbuilderx.git",
+    "directory": "packages/hbuilderx-cli"
+  },
+  "bin": {
+    "hx-cli": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "lint": "eslint --fix",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@tomjs/logger": "^1.4.0",
+    "@tomjs/node": "^2.2.3",
+    "archiver": "^7.0.1",
+    "chokidar": "^5.0.0",
+    "cosmiconfig": "^9.0.0",
+    "meow": "^14.0.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^7.0.0"
+  }
+}

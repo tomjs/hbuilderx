@@ -1,7 +1,7 @@
 {
   "extends": "@tomjs/tsconfig/node.json",
   "include": [
-    "hbuilderx.d.ts",
-    "src"
+    "src/**/*.ts",
+    "*.config.ts"
   ]
 }

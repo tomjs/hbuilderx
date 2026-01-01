@@ -89,7 +89,9 @@
     }
   },
   "scripts": {
-    "dev": "tsdown --watch",
+    "dev": "run-p dev:*",
+    "dev:tsdown": "tsdown --watch",
+    "dev:cli": "hx-cli --watch",
     "build": "tsdown --minify",
     "lint": "eslint --fix"
   },
@@ -97,6 +99,7 @@
     "@tomjs/hbuilderx": "workspace:*"
   },
   "devDependencies": {
+    "@tomjs/hbuilderx-cli": "workspace:*",
     "@types/node": "^20.19.27",
     "tsx": "^4.21.0",
     "typescript": "~5.9.3"

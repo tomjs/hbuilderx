@@ -6,10 +6,7 @@
       "@/*": [
         "./src/*"
       ]
-    },
-    "types": [
-      "vite/client"
-    ]
+    }
   },
   "include": [
     "src/**/*.ts",

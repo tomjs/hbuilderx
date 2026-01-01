@@ -36,4 +36,4 @@ pnpm build
 网页调试
 
 - 可以使用 [react-devtools](https://www.npmjs.com/package/react-devtools) 这个独立应用调试 `webview`
-- 可选可以使用 `Google Chrome`，在地址栏输入 `chrome://inspect/#devices` 访问。如果 `Remote Target` 不显示，打开 `HBuilderX` 调试插件的控制台，查看会看到 `DevTools listening on ws://127.0.0.1:9500/devtools/browser/e964a967-04da-48f2-8656-9ba933f39e59`, 配置 `Discover network targets` 对应的 `localhost:9500` 即可。
+- 可以使用 `Google Chrome`，在地址栏输入 `chrome://inspect/#devices` 访问。如果 `Remote Target` 不显示，打开 `HBuilderX` 调试插件的控制台，查看会看到 `DevTools listening on ws://127.0.0.1:9500/devtools/browser/e964a967-04da-48f2-8656-9ba933f39e59`, 配置 `Discover network targets` 对应的 `localhost:9500` 即可。

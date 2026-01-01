@@ -10,11 +10,11 @@ function showWebView(webviewPanel: WebViewPanel | WebViewDialog) {
   const webview = webviewPanel.webView;
 
   webview.html = getWebviewHtml({
-    injectCode: `<script>window.__FLAG1__=666;window.__FLAG2__=888;console.log(window.__FLAG1__);</script>`,
     // dev server
     serverUrl: process.env.VITE_DEV_SERVER_URL,
     // build
     context: getContext(),
+    injectCode: `<script>window.__FLAG1__=666;window.__FLAG2__=888;console.log(window.__FLAG1__);</script>`,
   });
 
   // 插件接收webview发送的消息(可以被JSON化的数据)

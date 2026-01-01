@@ -90,7 +90,9 @@
     }
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "run-p dev:*",
+    "dev:vite": "vite",
+    "dev:cli": "hx-cli --watch",
     "build": "vite build",
     "lint": "eslint --fix"
   },
@@ -99,6 +101,7 @@
     "vue": "^3.5.26"
   },
   "devDependencies": {
+    "@tomjs/hbuilderx-cli": "workspace:*",
     "@tomjs/vite-plugin-hbuilderx": "workspace:*",
     "@types/node": "^20.19.27",
     "@vitejs/plugin-vue": "^6.0.3",

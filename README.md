@@ -4,10 +4,11 @@
 
 ## 包
 
-| 包名                                                      | 说明                                        | 版本                                                                                                                            | node                                                                                 |
-| --------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [@tomjs/hbuilderx](./packages/hbuilderx/README.md)        | 为插件提供 `hbuilderx` 的 `types`和封装方法 | [![npm](https://img.shields.io/npm/v/@tomjs/hbuilderx)](https://www.npmjs.com/package/@tomjs/hbuilderx)                         | ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/hbuilderx)             |
-| [@tomjs/vite-plugin-hbuilderx](./packages/vite/README.md) | 支持使用 `vue`/`react` 开发 `webview`       | [![npm](https://img.shields.io/npm/v/@tomjs/vite-plugin-hbuilderx)](https://www.npmjs.com/package/@tomjs/vite-plugin-hbuilderx) | ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/vite-plugin-hbuilderx) |
+| 包名                                                       | 说明                                          | 版本                                                                                                                            | node                                                                                 |
+| ---------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [@tomjs/hbuilderx](./packages/hbuilderx/README.md)         | 为插件提供 `hbuilderx` 的 `types`和封装方法   | [![npm](https://img.shields.io/npm/v/@tomjs/hbuilderx)](https://www.npmjs.com/package/@tomjs/hbuilderx)                         | ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/hbuilderx)             |
+| [@tomjs/hbuilderx-cli](./packages/hbuilderx-cli/README.md) | 增强 `hbuilderx`代码提示和打包等的 `cli` 工具 | [![npm](https://img.shields.io/npm/v/@tomjs/hbuilderx-cli)](https://www.npmjs.com/package/@tomjs/hbuilderx-cli)                 | ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/hbuilderx-cli)         |
+| [@tomjs/vite-plugin-hbuilderx](./packages/vite/README.md)  | 支持使用 `vue`/`react` 开发 `webview`         | [![npm](https://img.shields.io/npm/v/@tomjs/vite-plugin-hbuilderx)](https://www.npmjs.com/package/@tomjs/vite-plugin-hbuilderx) | ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/vite-plugin-hbuilderx) |
 
 ## 示例
 

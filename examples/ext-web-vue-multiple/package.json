@@ -1,6 +1,6 @@
 {
   "publisher": "tomjs",
-  "name": "ext-web-vue",
+  "name": "ext-web-vue-multiple",
   "displayName": "vue插件",
   "type": "commonjs",
   "version": "0.0.0",

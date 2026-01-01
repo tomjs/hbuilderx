@@ -2,8 +2,7 @@
   "name": "@tomjs/hbuilderx",
   "type": "commonjs",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.26.2",
-  "description": "hbuilderx 插件开发工具",
+  "description": "为 HBuilderX 的插件开发提供所需的types、API，方便结合 typescript、tsdown、vite等现代化工具使用",
   "author": {
     "name": "Tom Gao",
     "email": "tom@tomgao.cc"

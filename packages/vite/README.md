@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@tomjs/vite-plugin-hbuilderx)](https://www.npmjs.com/package/@tomjs/vite-plugin-hbuilderx) ![node-current (scoped)](https://img.shields.io/node/v/@tomjs/vite-plugin-hbuilderx) ![license](https://img.shields.io/npm/l/@tomjs/vite-plugin-hbuilderx) [![jsDocs.io](https://img.shields.io/badge/jsDocs.io-reference-blue)](https://www.jsdocs.io/package/@tomjs/vite-plugin-hbuilderx)
 
-> 用 `vue`/`react` 来开发 [HBuilderX](https://hx.dcloud.net.cn/) 的 [WebView控件视图](https://hx.dcloud.net.cn/ExtensionDocs/Api/windows/createWebView) 和 [WebView页面的对话框](https://hx.dcloud.net.cn/ExtensionDocs/Api/windows/createWebViewDialog)。
+> 为 [HBuilderX](https://www.dcloud.io/hbuilderx.html) 开发 [插件](https://hx.dcloud.net.cn/ExtensionTutorial/README) 提供 [vite](https://cn.vitejs.dev/) 插件，可以用 `vue`/`react` 来开发 [WebView视图](https://hx.dcloud.net.cn/ExtensionDocs/Api/windows/createWebView) 和 [WebView页面的对话框](https://hx.dcloud.net.cn/ExtensionDocs/Api/windows/createWebViewDialog)。
 
 在开发模式时，使用 `iframe` 加载 `vue`/`react` 服务，在 `iframe` 和 `parent` 之间模拟 `hbuilderx.postMessage`等方法，用来支持 `HMR`；生产构建时，将最终生成的 `index.html` 代码注入到 `插件代码` 中，减少工作量。
 
@@ -329,7 +329,7 @@ interface WebviewHtmlOptions {
 
 - 可以使用 [react-devtools](https://github.com/facebook/react/tree/main/packages/react-devtools) 和 [vue-devtools](https://devtools.vuejs.org/guide/standalone) 的独立应用调试 `webview`
 - `vue` 项目可以使用 [vite-plugin-vue-devtools](https://devtools.vuejs.org/guide/vite-plugin) 这个 `vite` 插件直接在页面调试
-- 可选可以使用 `Google Chrome`，在地址栏输入 `chrome://inspect/#devices` 访问。如果 `Remote Target` 不显示，打开 `HBuilderX` 调试插件的控制台，查看会看到 `DevTools listening on ws://127.0.0.1:9500/devtools/browser/e964a967-04da-48f2-8656-9ba933f39e59`, 配置 `Discover network targets` 对应的 `localhost:9500` 即可。
+- 可以使用 `Google Chrome`，在地址栏输入 `chrome://inspect/#devices` 访问。如果 `Remote Target` 不显示，打开 `HBuilderX` 调试插件的控制台，查看会看到 `DevTools listening on ws://127.0.0.1:9500/devtools/browser/e964a967-04da-48f2-8656-9ba933f39e59`, 配置 `Discover network targets` 对应的 `localhost:9500` 即可。
 
 ## 示例
 
@@ -347,4 +347,5 @@ pnpm build
 
 ## 关联
 
-- [@tomjs/hbuilderx](https://npmjs.com/package/@tomjs/hbuilderx): 一些实用工具，用于简化 [hbuilderx 插件](https://marketplace.visualstudio.com/VSCode) 的开发。
+- [@tomjs/hbuilderx](https://npmjs.com/package/@tomjs/hbuilderx): 为 [HBuilderX](https://www.dcloud.io/hbuilderx.html) 的 [插件](https://hx.dcloud.net.cn/ExtensionTutorial/README) 开发提供所需的 `types`、`API`，方便结合 [typescript](https://www.typescriptlang.org/zh/)、[tsdown](https://tsdown.dev/zh-CN/)、[vite](https://cn.vitejs.dev/) 等现代化工具使用。
+- [@tomjs/hbuilderx-cli](https://npmjs.com/package/@tomjs/hbuilderx-cli): 为 [HBuilderX](https://www.dcloud.io/hbuilderx.html) 开发 [插件](https://hx.dcloud.net.cn/ExtensionTutorial/README) 提供便利的 `cli` 工具，根据 `package.json` 中的 `contributes` 配置，为 `hbuilderx` 的 `命令`、`视图` 等 `API` 提供 `id` 提示。
