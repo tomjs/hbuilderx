@@ -1,43 +1,42 @@
 import type { WebViewDialog, WebViewPanel } from 'hbuilderx';
-import { window, workspace } from 'hbuilderx';
-import vueHtml from './vue.html';
+import { getContext } from '@tomjs/hbuilderx';
+import { window } from 'hbuilderx';
+import { getWebviewHtml } from 'virtual:hbuilderx';
 
 /**
- * @description 显示webview
+ * @description 显示webview page1
  */
 function showWebView(webviewPanel: WebViewPanel | WebViewDialog) {
   const webview = webviewPanel.webView;
 
-  let background = '';
-
-  const config = workspace.getConfiguration();
-  const colorScheme = config.get('editor.colorScheme');
-
-  if (colorScheme === 'Monokai') {
-    background = '#272822';
-  }
-  else if (colorScheme === 'Atom One Dark') {
-    background = '#282c34';
-  }
-  else {
-    background = '#fffae8';
-  };
-
-  const defaultBg = '#fffae8';
-  if (defaultBg !== background) {
-    webview.html = vueHtml.replace(defaultBg, background);
-  }
-  else {
-    webview.html = vueHtml;
-  }
-
-  // 插件发送消息(可以被JSON化的数据)到webview
-  // webview.postMessage({
-  //   command: 'test',
-  // });
+  webview.html = getWebviewHtml({
+    serverUrl: process.env.VITE_DEV_SERVER_URL,
+    context: getContext(),
+  });
 
   // 插件接收webview发送的消息(可以被JSON化的数据)
   webview.onDidReceiveMessage((msg) => {
+    console.log('extension msg:', msg);
+    if (msg.command === 'alert') {
+      window.showInformationMessage(msg.text);
+    }
+  });
+};
+/**
+ * @description 显示webview page2
+ */
+function showWebView2(webviewPanel: WebViewPanel | WebViewDialog) {
+  const webview = webviewPanel.webView;
+
+  webview.html = getWebviewHtml({
+    serverUrl: `${process.env.VITE_DEV_SERVER_URL}/index2.html`,
+    context: getContext(),
+    inputName: 'index2',
+  });
+
+  // 插件接收webview发送的消息(可以被JSON化的数据)
+  webview.onDidReceiveMessage((msg) => {
+    console.log('extension msg:', msg);
     if (msg.command === 'alert') {
       window.showInformationMessage(msg.text);
     }
@@ -68,7 +67,7 @@ export function createRightWebview() {
     });
   }
 
-  showWebView(rightWebviewPanel);
+  showWebView2(rightWebviewPanel);
 
   window.showView({
     containerId: 'tomjsRightSide',

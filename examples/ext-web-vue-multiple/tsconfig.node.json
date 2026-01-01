@@ -1,0 +1,13 @@
+{
+  "extends": "@tomjs/tsconfig/node.json",
+  "compilerOptions": {
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "types": []
+  },
+  "include": [
+    "extension/**/*.ts",
+    "extension/**/*.d.ts",
+    "vite.config.ts"
+  ]
+}

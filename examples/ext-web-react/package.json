@@ -1,0 +1,114 @@
+{
+  "publisher": "tomjs",
+  "name": "ext-web-react",
+  "displayName": "react插件",
+  "type": "commonjs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "react插件",
+  "keywords": [
+    "HBuilderX"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "main": "dist/extension/index.js",
+  "engines": {
+    "node": ">=16.17.0",
+    "HBuilderX": "^2.7.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "tomjs.ext.showLeftWebview",
+        "title": "触发左侧视图"
+      },
+      {
+        "command": "tomjs.ext.showRightWebview",
+        "title": "触发右侧视图"
+      },
+      {
+        "command": "tomjs.ext.showWebviewDialog",
+        "title": "触发弹框视图"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "tomjs.ext.showLeftWebview",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showRightWebview",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showWebviewDialog",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showCustomEditor",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "group": "z_commands"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tomjsActivitybar",
+          "title": "左侧webview展示"
+        }
+      ],
+      "rightside": [
+        {
+          "id": "tomjsRightSide",
+          "title": "右侧webview展示"
+        }
+      ]
+    },
+    "views": {
+      "tomjsActivitybar": [
+        {
+          "id": "tomjs.webview.left",
+          "title": "webview - 展示"
+        }
+      ],
+      "tomjsRightSide": [
+        {
+          "id": "tomjs.webview.right",
+          "title": "webview - 展示"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint --fix"
+  },
+  "dependencies": {
+    "@tomjs/hbuilderx": "workspace:*",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "^2.5.0",
+    "@tomjs/vite-plugin-hbuilderx": "workspace:*",
+    "@types/node": "^20.19.27",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0"
+  }
+}

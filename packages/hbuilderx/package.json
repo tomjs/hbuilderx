@@ -26,7 +26,6 @@
       }
     },
     "./types": "./hbuilderx.d.ts",
-    "./extension": "./hbuilderx.d.ts",
     "./client": "./client.d.ts"
   },
   "main": "./dist/index.js",
@@ -34,6 +33,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "client.d.ts",
     "hbuilderx.d.ts"
   ],
   "engines": {

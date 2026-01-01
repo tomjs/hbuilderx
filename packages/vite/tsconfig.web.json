@@ -1,0 +1,9 @@
+{
+  "extends": "@tomjs/tsconfig/web.json",
+  "compilerOptions": {
+    "composite": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": false
+  },
+  "include": ["src/webview/client.ts", "src/webview/window.d.ts"]
+}

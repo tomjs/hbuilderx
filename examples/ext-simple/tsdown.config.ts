@@ -1,14 +1,13 @@
 import { defineConfig } from 'tsdown';
+import pkg from './package.json';
 
 export default defineConfig((cfg) => {
   return {
     entry: 'src/index.ts',
-    format: ['cjs'],
     target: 'node16.17',
-    externals: ['hbuilderx'],
-    minify: cfg.watch ? false : cfg.minify,
-    shims: false,
-    clean: true,
+    format: 'cjs',
+    external: ['hbuilderx'],
+    noExternal: cfg.watch ? [] : Object.keys(pkg.dependencies || {}),
     fixedExtension: false,
   };
 });

@@ -19,6 +19,8 @@ npm add @tomjs/hbuilderx
 
 ## 使用
 
+### 插件配置
+
 通以下任意方法，可以在 `ts` 支持 `hbuilderx` 库的代码提示，具体也可参考 `examples` 示例
 
 1. 在插件源码文件夹 `src` 中添加 `env.d.ts` 或已存在的其他 `d.ts` 文件中，添加以下内容到文件头部
@@ -58,4 +60,24 @@ export function activate(context: ExtensionContext) {
 }
 
 export function deactivate() { }
+```
+
+### webview 配置
+
+在 `vue` 或 `react` 项目中支持 `hbuilderx.postMessage` 等提示，可以选择如下任意方式。
+
+- 在 `d.ts` 文件，添加一下内容
+
+```ts
+/// <reference types="@tomjs/hbuilderx/client" />
+```
+
+- 在 `tsconfig.json` 文件，并添加以下内容
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@tomjs/hbuilderx/client"]
+  }
+}
 ```

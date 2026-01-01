@@ -1,0 +1,65 @@
+{
+  "name": "@tomjs/vite-plugin-hbuilderx",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.26.2",
+  "author": {
+    "name": "Tom Gao",
+    "email": "tom@tomgao.cc"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomjs/hbuilderx.git",
+    "directory": "packages/vite"
+  },
+  "keywords": [
+    "vite",
+    "plugin",
+    "hbuilderx",
+    "html",
+    "hmr",
+    "extension",
+    "webview"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./webview": "./dist/webview.js",
+    "./client": "./dist/client.iife.js",
+    "./env": "./env.d.ts"
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "lint": "run-s lint:stylelint lint:eslint",
+    "lint:stylelint": "stylelint \"examples/**/*.{css,scss,vue}\" --fix",
+    "lint:eslint": "eslint --fix",
+    "prepublishOnly": "pnpm build"
+  },
+  "peerDependencies": {
+    "vite": ">=5"
+  },
+  "dependencies": {
+    "@tomjs/logger": "^1.4.0",
+    "@tomjs/node": "^2.2.3",
+    "execa": "^9.6.1",
+    "lodash.merge": "^4.6.2",
+    "node-html-parser": "^7.0.1",
+    "picocolors": "^1.1.1",
+    "tsdown": "~0.18.4"
+  },
+  "devDependencies": {
+    "@tomjs/hbuilderx": "workspace:*",
+    "@types/jsdom": "^27.0.0",
+    "@types/lodash.merge": "^4.6.9"
+  }
+}

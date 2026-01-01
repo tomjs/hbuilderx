@@ -30,6 +30,7 @@ web_modules
 .eslintcache
 .stylelintcache
 tsconfig.tsbuildinfo
+tsconfig.*.tsbuildinfo
 
 # environment
 .env
