@@ -1,0 +1,61 @@
+{
+  "name": "@tomjs/hbuilderx",
+  "type": "commonjs",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.27.0",
+  "description": "hbuilderx 插件开发工具",
+  "author": {
+    "name": "Tom Gao",
+    "email": "tom@tomgao.cc"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomjs/hbuilderx.git"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "hbuilderx.d.ts"
+  ],
+  "engines": {
+    "node": ">=16.17.0"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "lint": "eslint --fix",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^6.7.3",
+    "@commitlint/cli": "^20.2.0",
+    "@tomjs/commitlint": "^5.0.0",
+    "@tomjs/eslint": "^6.3.0",
+    "@tomjs/tsconfig": "^2.2.0",
+    "@types/node": "^20.19.27",
+    "eslint": "^9.39.2",
+    "lint-staged": "^16.2.7",
+    "npm-run-all2": "^8.0.4",
+    "publint": "^0.3.16",
+    "rimraf": "^6.1.2",
+    "simple-git-hooks": "^2.13.1",
+    "tsdown": "^0.18.4",
+    "tsx": "^4.21.0",
+    "typescript": "~5.9.3"
+  }
+}
