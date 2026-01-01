@@ -1,0 +1,104 @@
+{
+  "publisher": "tomjs",
+  "name": "ext-simple",
+  "displayName": "简单插件",
+  "type": "commonjs",
+  "version": "0.0.0",
+  "description": "简单插件",
+  "keywords": [
+    "HBuilderX"
+  ],
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/index.js",
+  "engines": {
+    "node": ">=16.17.0",
+    "HBuilderX": "^2.7.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "tomjs.ext.showLeftWebview",
+        "title": "触发左侧视图"
+      },
+      {
+        "command": "tomjs.ext.showRightWebview",
+        "title": "触发右侧视图"
+      },
+      {
+        "command": "tomjs.ext.showWebviewDialog",
+        "title": "触发弹框视图"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "tomjs.ext.showLeftWebview",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showRightWebview",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showWebviewDialog",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "tomjs.ext.showCustomEditor",
+          "group": "z_commands",
+          "when": "editorTextFocus"
+        },
+        {
+          "group": "z_commands"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tomjsActivitybar",
+          "title": "左侧webview展示"
+        }
+      ],
+      "rightside": [
+        {
+          "id": "tomjsRightSide",
+          "title": "右侧webview展示"
+        }
+      ]
+    },
+    "views": {
+      "tomjsActivitybar": [
+        {
+          "id": "tomjs.webview.left",
+          "title": "webview - 展示"
+        }
+      ],
+      "tomjsRightSide": [
+        {
+          "id": "tomjs.webview.right",
+          "title": "webview - 展示"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown --minify",
+    "lint": "eslint --fix"
+  },
+  "dependencies": {
+    "@tomjs/hbuilderx": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.27",
+    "tsx": "^4.21.0",
+    "typescript": "~5.9.3"
+  }
+}

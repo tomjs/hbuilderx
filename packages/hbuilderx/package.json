@@ -1,0 +1,48 @@
+{
+  "name": "@tomjs/hbuilderx",
+  "type": "commonjs",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.26.2",
+  "description": "hbuilderx 插件开发工具",
+  "author": {
+    "name": "Tom Gao",
+    "email": "tom@tomgao.cc"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomjs/hbuilderx.git",
+    "directory": "packages/hbuilderx"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./types": "./hbuilderx.d.ts",
+    "./extension": "./hbuilderx.d.ts",
+    "./client": "./client.d.ts"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "hbuilderx.d.ts"
+  ],
+  "engines": {
+    "node": ">=16.17.0"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "lint": "eslint --fix",
+    "prepublishOnly": "pnpm build"
+  }
+}

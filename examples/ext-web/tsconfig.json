@@ -1,0 +1,6 @@
+{
+  "extends": "@tomjs/tsconfig/node.json",
+  "include": [
+    "src"
+  ]
+}
