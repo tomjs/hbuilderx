@@ -1,10 +1,11 @@
 {
   "publisher": "tomjs",
-  "name": "ext-simple",
-  "displayName": "简单插件",
+  "name": "ext-web",
+  "displayName": "网页插件",
   "type": "commonjs",
   "version": "0.0.0",
-  "description": "简单插件",
+  "private": true,
+  "description": "网页插件",
   "keywords": [
     "HBuilderX"
   ],
