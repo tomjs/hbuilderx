@@ -1,3 +1,7 @@
+## [1.1.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.0.1...hbuilderx%401.1.0) (2026-01-03)
+
+- feat: change hbuilderx types path  [0600830](https://github.com/tomjs/hbuilderx/commit/0600830)
+
 ## [1.0.1](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.0.0...hbuilderx%401.0.1) (2026-01-01)
 
 - feat: 给 hbuilderx 和 hbuilderx-cli 补充 keywords  [a174180](https://github.com/tomjs/hbuilderx/commit/a174180)
