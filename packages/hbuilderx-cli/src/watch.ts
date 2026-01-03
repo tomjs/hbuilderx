@@ -104,8 +104,7 @@ function getCommandCode(contributes: any, opts: CliOptions) {
     return '';
   }
 
-  return /* ts */ `
-  /**
+  return /* ts */ `  /**
    * 命令管理
    */
   export const commands: CommandManager;

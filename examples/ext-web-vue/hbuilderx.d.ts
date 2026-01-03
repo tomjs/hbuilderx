@@ -1,6 +1,5 @@
 // 通过 @tomjs/hbuilderx-cli 生成的 d.ts 文件
 declare module 'hbuilderx' {
-
   /**
    * 命令管理
    */
