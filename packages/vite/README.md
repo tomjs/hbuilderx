@@ -70,6 +70,19 @@ npm add -D @tomjs/vite-plugin-hbuilderx
 
 ### extension
 
+`tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "types": [
+      "@tomjs/hbuilderx/types",
+      "@tomjs/vite-plugin-hbuilderx/types"
+    ]
+  }
+}
+```
+
 代码片段，更多配置看示例
 
 ```ts
