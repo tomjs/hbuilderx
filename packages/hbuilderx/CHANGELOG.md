@@ -1,3 +1,7 @@
+## [1.2.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.1.0...hbuilderx%401.2.0) (2026-01-03)
+
+- feat: 新增初始插件方法  [f8a9a0b](https://github.com/tomjs/hbuilderx/commit/f8a9a0b)
+
 ## [1.1.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.0.1...hbuilderx%401.1.0) (2026-01-03)
 
 - feat: change hbuilderx types path  [0600830](https://github.com/tomjs/hbuilderx/commit/0600830)
