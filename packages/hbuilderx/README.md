@@ -76,6 +76,9 @@ export function deactivate() { }
 
 ```json
 {
-  "include": ["@tomjs/hbuilderx/client", "src/**/*.ts", "src/**/*.d.ts"]
+  "compilerOptions": {
+    "types": ["@tomjs/hbuilderx/client"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }
 ```

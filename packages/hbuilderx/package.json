@@ -30,8 +30,12 @@
         "default": "./dist/index.js"
       }
     },
-    "./types": "./hbuilderx.d.ts",
-    "./client": "./client.d.ts"
+    "./types": {
+      "types": "./hbuilderx.d.ts"
+    },
+    "./client": {
+      "types": "./client.d.ts"
+    }
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
