@@ -231,6 +231,12 @@ importers:
       cosmiconfig:
         specifier: ^9.0.0
         version: 9.0.0(typescript@5.9.3)
+      fast-glob:
+        specifier: ^3.3.3
+        version: 3.3.3
+      glob:
+        specifier: ^13.0.0
+        version: 13.0.0
       meow:
         specifier: ^14.0.0
         version: 14.0.0

@@ -1,16 +1,15 @@
+/**
+ * cli 参数
+ */
 export interface CliOptions {
   /**
    * 监听文件变化
    */
   watch?: boolean;
   /**
-   * 打包插件
+   * 打包插件，根据 package.json 中的 files 字段打包，如果未设置，默认取 dist,resources,package.json,LICENSE 文件夹或文件。
    */
   pack?: boolean;
-  /**
-   * 打包插件文件，默认 dist、package.json、license
-   */
-  packFiles?: string[];
   /**
    * 当前工作目录/根目录
    */

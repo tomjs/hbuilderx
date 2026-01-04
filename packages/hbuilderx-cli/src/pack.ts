@@ -3,15 +3,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { readJson } from '@tomjs/node';
 import archiver from 'archiver';
+import { glob } from 'glob';
 import colors from 'picocolors';
 import { logger } from './util';
 
 export async function packExtension(opts: CliOptions) {
-  const packFiles = Array.isArray(opts.packFiles) ? opts.packFiles : ['dist', 'package.json', 'license'];
-  if (!packFiles.includes('package.json')) {
-    packFiles.push('package.json');
-  }
-
   const cwd = opts.cwd || process.cwd();
   const pkgPath = path.join(cwd, 'package.json');
   if (!fs.existsSync(pkgPath)) {
@@ -19,7 +15,7 @@ export async function packExtension(opts: CliOptions) {
     return;
   }
   const pkg = await readJson(pkgPath);
-  if (!checkPackage(pkg)) {
+  if (!checkPackageFields(pkg)) {
     return;
   }
   const mainFile = path.join(cwd, pkg.main);
@@ -27,6 +23,23 @@ export async function packExtension(opts: CliOptions) {
     logger.error(`未找到 ${colors.bold('package.json')} 中 ${colors.bold('main')} 字段值路径： ${colors.green(mainFile)}`);
     return;
   }
+
+  const packFilters: string[] = Array.isArray(pkg.files) && pkg.files.length
+    ? pkg.files
+    : [
+        'dist',
+        'resources',
+        'package.json',
+        'LICENSE',
+      ];
+
+  const pkgFiles = await glob(packFilters.filter(s => !s.startsWith('!')), {
+    cwd,
+    ignore: packFilters.filter(s => s.startsWith('!')).map(s => s.slice(1)).concat(['node_modules/**']),
+  });
+
+  console.log(pkgFiles);
+
   logger.info(`${colors.blue(pkg.name)} 插件打包开始`);
   const archive = archiver('zip', {
     zlib: { level: 9 },
@@ -51,7 +64,7 @@ export async function packExtension(opts: CliOptions) {
   const output = fs.createWriteStream(path.join(cwd, `${pkg.name}.zip`));
   archive.pipe(output);
 
-  packFiles.forEach((file) => {
+  pkgFiles.forEach((file) => {
     const filePath = path.join(cwd, file);
     if (!fs.existsSync(filePath)) {
       return;
@@ -67,7 +80,7 @@ export async function packExtension(opts: CliOptions) {
   archive.finalize();
 }
 
-function checkPackage(pkg: any) {
+function checkPackageFields(pkg: any) {
   if (!pkg) {
     logger.error('package.json 文件格式错误');
     return false;
