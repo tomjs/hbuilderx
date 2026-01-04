@@ -3,7 +3,10 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "types": []
+    "types": [
+      "@tomjs/hbuilderx/types",
+      "@tomjs/vite-plugin-hbuilderx/types"
+    ]
   },
   "include": [
     "extension/**/*.ts",
