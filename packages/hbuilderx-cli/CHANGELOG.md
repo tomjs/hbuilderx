@@ -1,3 +1,7 @@
+## [1.2.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx-cli%401.1.0...hbuilderx-cli%401.2.0) (2026-01-04)
+
+- feat: 优化 hbuilderx-cli 配置  [e0bf55a](https://github.com/tomjs/hbuilderx/commit/e0bf55a)
+
 ## [1.1.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx-cli%401.0.1...hbuilderx-cli%401.1.0) (2026-01-03)
 
 - feat: cli 生成 hbuilderx.d.ts 格式化调整  [e31f7b9](https://github.com/tomjs/hbuilderx/commit/e31f7b9)
