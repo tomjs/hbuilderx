@@ -1,3 +1,7 @@
+## [1.2.1](https://github.com/tomjs/hbuilderx/compare/vite%401.2.0...vite%401.2.1) (2026-01-06)
+
+- fix: vite 中 sourcemap 使用默认值  [938411f](https://github.com/tomjs/hbuilderx/commit/938411f)
+
 ## [1.2.0](https://github.com/tomjs/hbuilderx/compare/vite%401.1.0...vite%401.2.0) (2026-01-06)
 
 - feat: 使用 vite 日志  [ac9f9d9](https://github.com/tomjs/hbuilderx/commit/ac9f9d9)
