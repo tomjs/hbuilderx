@@ -61,7 +61,7 @@ function preMergeOptions(options?: PluginOptions): PluginOptions {
   const opt = opts.extension || {};
 
   if (isDev) {
-    opt.sourcemap = opt.sourcemap ?? true;
+    // opt.sourcemap = opt.sourcemap ?? true;
   }
   else {
     opt.minify ??= true;
@@ -175,7 +175,6 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
     return {
       build: {
         outDir,
-        sourcemap: isDev ? true : config?.build?.sourcemap,
         rollupOptions: {
           output: rollupOutput,
         },
