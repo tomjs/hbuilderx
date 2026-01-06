@@ -22,7 +22,7 @@ function createWatcher(paths: string | string[], callback: () => Promise<any>) {
   watcher.on('ready', async () => {
     ready = true;
 
-    logger.info(`监听: ${watchPaths.map(s => colors.green(s))}`);
+    logger.info(`监听 ${watchPaths.map(s => colors.green(s))}`);
 
     await callback();
   });
@@ -58,12 +58,12 @@ export async function watchFiles(opts: CliOptions) {
 async function genDtsFromPkg(pkgPath: string, opts: CliOptions) {
   const pkg = await readJson(pkgPath);
   if (!pkg) {
-    return logger.error(`${colors.green('package.json')} 文件解析失败`);
+    return logger.error(`${colors.blue('package.json')} 文件解析失败`);
   }
 
   const contributes = pkg.contributes;
   if (!contributes) {
-    return logger.error(`${colors.green('package.json')} 文件缺少 contributes 属性`);
+    return logger.error(`${colors.blue('package.json')} 文件缺少 contributes 属性`);
   }
 
   // 命令 d.ts

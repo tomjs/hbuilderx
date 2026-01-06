@@ -41,7 +41,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@tomjs/logger": "^1.4.0",
+    "@tomjs/logger": "^3.0.0",
     "@tomjs/node": "^2.2.3",
     "archiver": "^7.0.1",
     "chokidar": "^5.0.0",

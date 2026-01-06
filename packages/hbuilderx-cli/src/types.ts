@@ -11,6 +11,10 @@ export interface CliOptions {
    */
   pack?: boolean;
   /**
+   * 时间前缀
+   */
+  time?: boolean;
+  /**
    * 当前工作目录/根目录
    */
   cwd?: string;

@@ -92,7 +92,7 @@
   "scripts": {
     "dev": "run-p dev:*",
     "dev:tsdown": "tsdown --watch",
-    "dev:cli": "hx-cli --watch",
+    "dev:cli": "hx-cli --watch --flag=symbol",
     "build": "tsdown --minify",
     "lint": "eslint --fix"
   },

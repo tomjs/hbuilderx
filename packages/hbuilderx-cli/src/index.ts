@@ -16,6 +16,7 @@ Usage
 Options
   --watch, -w           监听 package.json，生产 d.ts 文件
   --pack, -p            生成插件打包文件
+  --flag, -f            日志标识:time/symbol/none，默认 "time"
   --config              指定配置文件，如 "hx-cli.config.mjs"
   --verbose             显示更多信息
   --help, -h            显示帮助信息
@@ -37,6 +38,10 @@ Examples
     pack: {
       type: 'boolean',
       shortFlag: 'p',
+    },
+    flag: {
+      type: 'string',
+      choices: ['time', 'symbol', 'none'],
     },
     verbose: {
       type: 'boolean',
@@ -62,6 +67,7 @@ else if (flags.version) {
 }
 else {
   logger.enableDebug(flags.verbose);
+  logger.setOptions({ flag: (flags.flag as any) || 'time' });
   const cliOpts = Object.assign({ cwd: input[0] } as CliOptions, flags) as CliOptions;
   logger.debug('cli options:', cliOpts);
 
