@@ -32,6 +32,7 @@ Usage
 Options
   --watch, -w           监听 package.json，生产 d.ts 文件
   --pack, -p            生成插件打包文件
+  --flag, -f            日志标识:time/symbol/none，默认 "time"
   --config              指定配置文件，如 "hx-cli.config.mjs"
   --verbose             显示更多信息
   --help, -h            显示帮助信息
@@ -39,6 +40,7 @@ Options
 
 Examples
   $ hx-cli --watch
+  $ hx-cli --watch --flag=symbol
   $ hx-cli --pack
 ```
 

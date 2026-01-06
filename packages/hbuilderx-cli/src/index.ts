@@ -24,6 +24,7 @@ Options
 
 Examples
   $ hx-cli --watch
+  $ hx-cli --watch --flag=symbol
   $ hx-cli --pack
 `, {
   importMeta: import.meta,
