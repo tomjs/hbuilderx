@@ -11,13 +11,12 @@ import { parse as htmlParser } from 'node-html-parser';
 import colors from 'picocolors';
 import { build as tsdownBuild } from 'tsdown';
 import { ORG_NAME, RESOLVED_VIRTUAL_MODULE_ID, VIRTUAL_MODULE_ID } from './constants';
-import { createLogger } from './logger';
+import { logger } from './logger';
 import { resolveServerUrl } from './utils';
 
 export * from './types';
 
 const isDev = process.env.NODE_ENV === 'development';
-const logger = createLogger();
 
 function getPkg() {
   const pkgFile = path.resolve(process.cwd(), 'package.json');
@@ -100,8 +99,6 @@ function genProdWebviewCode(cache: Record<string, string>) {
     if (!head) {
       root?.insertAdjacentHTML('beforeend', '<head></head>');
     }
-
-    head.insertAdjacentHTML('afterbegin', '<style>:root{--root-background-color:#fffae8;background-color:var(--root-background-color)}</style>');
 
     const tags = {
       script: 'src',
@@ -257,13 +254,13 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           };
 
-          logger.info('extension build start');
-
-          let buildCount = 0;
+          logger.info('插件编译开始');
 
           const webview = opts?.webview as WebviewOption;
 
           const { onSuccess: _onSuccess, ignoreWatch, logLevel, watchFiles, ...tsdownOptions } = opts.extension || {};
+          const entryDir = path.dirname(tsdownOptions.entry);
+
           await tsdownBuild(
             merge(tsdownOptions, {
               watch: watchFiles ?? (opts.recommended ? ['extension'] : true),
@@ -284,6 +281,19 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
                         if (id === RESOLVED_VIRTUAL_MODULE_ID)
                           return devWebviewVirtualCode;
                       },
+                      watchChange(id, e) {
+                        let event = '';
+                        if (e.event === 'update') {
+                          event = colors.green('更新');
+                        }
+                        else if (e.event === 'delete') {
+                          event = colors.red('删除');
+                        }
+                        else {
+                          event = colors.blue('创建');
+                        }
+                        logger.info(`${event} ${colors.dim(path.relative(entryDir, id))}`);
+                      },
                     },
                   ],
               async onSuccess(config, signal) {
@@ -296,12 +306,7 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
                   }
                 }
 
-                if (buildCount++ > 1) {
-                  logger.info('extension rebuild success');
-                }
-                else {
-                  logger.info('extension build success');
-                }
+                logger.info('插件编译成功');
               },
             } as TsdownOptions),
           );

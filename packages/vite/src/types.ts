@@ -32,7 +32,7 @@ export interface ExtensionOptions
  */
 export interface WebviewOption {
   /**
-   * 刷新页面的按键，如 F5/F6
+   * 开发模式，刷新页面的按键，如 F5/F6
    * @default "F6"
    */
   refreshKey?: string;
@@ -75,6 +75,7 @@ export interface PluginOptions {
    *  - `true`:
    *    - react: 注入 `<script src="http://localhost:8097"></script>`
    *    - vue: 注入 `<script src="http://localhost:8098"></script>`
+   *  - `number`: 自定义端口号
    * @default false
    */
   devtools?: boolean | number;

@@ -1,9 +1,12 @@
 {
-  "extends": "@tomjs/tsconfig/web.json",
+  "extends": "@tomjs/tsconfig/vue-dom.json",
   "compilerOptions": {
     "composite": true,
     "allowImportingTsExtensions": false,
     "noEmit": false
   },
-  "include": ["src/webview/client.ts", "src/webview/window.d.ts"]
+  "include": [
+    "src/webview/client.ts",
+    "src/webview/window.d.ts"
+  ]
 }

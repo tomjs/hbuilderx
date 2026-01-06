@@ -51,7 +51,6 @@
     "vite": ">=5"
   },
   "dependencies": {
-    "@tomjs/logger": "^1.4.0",
     "@tomjs/node": "^2.2.3",
     "execa": "^9.6.1",
     "lodash.merge": "^4.6.2",
