@@ -1,3 +1,7 @@
+## [1.3.1](https://github.com/tomjs/hbuilderx/compare/hbuilderx-cli%401.3.0...hbuilderx-cli%401.3.1) (2026-01-06)
+
+- feat: 优化 cli help信息和文档  [cd23d2d](https://github.com/tomjs/hbuilderx/commit/cd23d2d)
+
 ## [1.3.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx-cli%401.2.0...hbuilderx-cli%401.3.0) (2026-01-06)
 
 - feat: 优化 cli 日志  [81c2e45](https://github.com/tomjs/hbuilderx/commit/81c2e45)

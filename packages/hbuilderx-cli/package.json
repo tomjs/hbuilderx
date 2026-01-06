@@ -1,7 +1,7 @@
 {
   "name": "@tomjs/hbuilderx-cli",
   "type": "module",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "为 HBuilderX 开发插件提供便利的 cli 工具，根据 package.json 中的 contributes 配置，为 hbuilderx 的命令、视图等 API 提供 id 提示",
   "author": {
     "name": "Tom Gao",
