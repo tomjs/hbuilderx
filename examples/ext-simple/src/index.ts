@@ -4,6 +4,7 @@ import { commands, window } from 'hbuilderx';
 
 export function activate(context: ExtensionContext) {
   setContext(context);
+  console.log('ddd');
 
   context.subscriptions.push(
     commands.registerCommand('tomjs.xxx.showHello', async () => {

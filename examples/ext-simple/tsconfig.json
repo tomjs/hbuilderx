@@ -1,11 +1,7 @@
 {
   "extends": "@tomjs/tsconfig/node.json",
-  "compilerOptions": {
-    "types": [
-      "@tomjs/hbuilderx/types"
-    ]
-  },
   "include": [
-    "src"
+    "src",
+    "tsdown.config.ts"
   ]
 }
