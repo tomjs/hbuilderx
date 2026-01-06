@@ -1,7 +1,7 @@
 {
   "name": "@tomjs/vite-plugin-hbuilderx",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "为 HBuilderX 开发插件提供 vite 插件，可以使用 vue/react 开发 webview 的视图等",
   "author": {
     "name": "Tom Gao",
