@@ -253,7 +253,7 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           };
 
-          logger.info('插件编译开始');
+          let flag = false;
 
           const webview = opts?.webview as WebviewOption;
 
@@ -305,7 +305,10 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
                   }
                 }
 
-                logger.info('插件编译成功');
+                if (!flag) {
+                  flag = true;
+                  logger.info('插件编译服务启动成功');
+                }
               },
             } as TsdownOptions),
           );
