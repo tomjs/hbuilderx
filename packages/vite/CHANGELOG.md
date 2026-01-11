@@ -1,3 +1,8 @@
+## [1.3.0](https://github.com/tomjs/hbuilderx/compare/vite%401.2.1...vite%401.3.0) (2026-01-11)
+
+- feat: 插件编译成功日志仅首次编译成功后显示  [37cda67](https://github.com/tomjs/hbuilderx/commit/37cda67)
+- chore: update tsdown version  [b8a163a](https://github.com/tomjs/hbuilderx/commit/b8a163a)
+
 ## [1.2.1](https://github.com/tomjs/hbuilderx/compare/vite%401.2.0...vite%401.2.1) (2026-01-06)
 
 - fix: vite 中 sourcemap 使用默认值  [938411f](https://github.com/tomjs/hbuilderx/commit/938411f)
