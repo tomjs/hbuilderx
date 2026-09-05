@@ -1,3 +1,8 @@
+## [2.0.0](https://github.com/tomjs/hbuilderx/compare/vite%401.3.0...vite%402.0.0) (2026-09-05)
+
+- feat: vite plugin use vite8  [72c1134](https://github.com/tomjs/hbuilderx/commit/72c1134)
+- feat: 补充新的 hbuilderx 定义  [f120a99](https://github.com/tomjs/hbuilderx/commit/f120a99)
+
 ## [1.3.0](https://github.com/tomjs/hbuilderx/compare/vite%401.2.1...vite%401.3.0) (2026-01-11)
 
 - feat: 插件编译成功日志仅首次编译成功后显示  [37cda67](https://github.com/tomjs/hbuilderx/commit/37cda67)
