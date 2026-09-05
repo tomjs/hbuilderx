@@ -8,7 +8,7 @@
 
 ## 特性
 
-- 使用 [tsdown](https://tsdown.dev/zh-CN/) 快速构建 `插件代码`
+- 使用 [vite](https://vite.dev/) 快速构建 `插件代码`
 - 配置简单，专注业务
 - 支持 webview `HMR`
 - 支持[多页面应用](https://cn.vitejs.dev/guide/build.html#multi-page-app)
@@ -295,13 +295,22 @@ interface WebviewHtmlOptions {
 
 ### ExtensionOptions
 
-继承自 [tsdown](https://tsdown.dev/zh-CN/) 的 [Options](https://tsdown.dev/zh-CN/reference/api/Interface.Options)，添加了一些默认值，方便使用。
+继承自 [vite](https://vite.dev/) 的 [UserConfig](https://vite.dev/config/)，添加了一些默认值，方便使用。
 
-| 参数名     | 类型                 | 默认值                | 说明                     |
-| ---------- | -------------------- | --------------------- | ------------------------ |
-| entry      | `string`             | `extension/index.ts`  | 入口文件                 |
-| outDir     | `string`             | `dist-extension/main` | 输出文件夹               |
-| watchFiles | `string`\/`string[]` | ``                    | 开发时监听插件代码的文件 |
+| 参数名      | 类型                                        | 默认值                                        | 说明                           |
+| ----------- | ------------------------------------------- | --------------------------------------------- | ------------------------------ |
+| entry       | `string`                                    | `extension/index.ts`                          | 入口文件                       |
+| outDir      | `string`                                    | `dist-extension`                              | 输出文件夹                     |
+| format      | `'cjs'`\/`'esm'`                            | package.json 的 `type`                        | 编译格式                       |
+| external    | `string`\/`RegExp`\/`function`              | `['hbuilderx']`                               | 不打进产物中的模块             |
+| clean       | `boolean`                                   | `true`                                        | 构建前清空输出目录             |
+| treeshake   | `boolean`                                   | 生产 `true`                                   | 是否启用 tree-shaking          |
+| target      | `string`\/`string[]`\/`false`               | 见补充说明                                    | 构建目标                       |
+| sourcemap   | `boolean`\/`'inline'`\/`'hidden'`           | 见补充说明                                    | 是否生成 sourcemap             |
+| minify      | `boolean`\/`'oxc'`\/`'terser'`\/`'esbuild'` | 见补充说明                                    | 压缩输出                       |
+| watchFiles  | `string`\/`string[]`                        | ``                                            | 开发时额外监听插件代码的文件   |
+| ignoreWatch | `string`\/`RegExp`\/`string[]`              | `['.history','.temp','.tmp','.cache','dist']` | 开发时忽略监听的文件           |
+| onSuccess   | `string`\/`function`                        | ``                                            | 每次构建成功后执行的命令或回调 |
 
 ### WebviewOption
 
@@ -311,12 +320,13 @@ interface WebviewHtmlOptions {
 
 ### 补充说明
 
-- `extension` 未配置相关参数时的默认值，目前 `HBuilderX 插件` 不支持 `sourcemap`
+- `extension` 未配置相关参数时的默认值
 
-| 参数      | 开发模式默认值 | 生产模式默认值 |
-| --------- | -------------- | -------------- |
-| sourcemap | `true`         | `false`        |
-| minify    | `false`        | `true`         |
+| 参数      | 开发模式默认值                             | 生产模式默认值 |
+| --------- | ------------------------------------------ | -------------- |
+| sourcemap | `true`                                     | `false`        |
+| minify    | `false`                                    | `true`         |
+| target    | `['es2019','node16']`（esm 为 `'node20'`） | 同开发模式     |
 
 ## 环境变量
 

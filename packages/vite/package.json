@@ -48,19 +48,19 @@
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
-    "vite": ">=5"
+    "vite": ">=8.0.0"
   },
   "dependencies": {
     "@tomjs/node": "^2.2.3",
     "execa": "^9.6.1",
     "lodash.merge": "^4.6.2",
     "node-html-parser": "^7.0.2",
-    "picocolors": "^1.1.1",
-    "tsdown": "~0.19.0"
+    "picocolors": "^1.1.1"
   },
   "devDependencies": {
     "@tomjs/hbuilderx": "workspace:*",
     "@types/jsdom": "^27.0.0",
-    "@types/lodash.merge": "^4.6.9"
+    "@types/lodash.merge": "^4.6.9",
+    "vite": "^8.2.2"
   }
 }

@@ -1,18 +1,24 @@
-import type { InlineConfig } from 'tsdown';
+import type { UserConfig as ViteOptions } from 'vite';
+
+type Arrayable<T> = T | T[];
 
 /**
- * hbuilderx 插件配置. 查看 [tsdown](https://tsdown.dev/) 和 [Config Options](https://tsdown.dev/reference/config-options) 获取更多信息.
+ * hbuilderx extension 配置. 插件代码现在由 [vite](https://vite.dev/) 自身编译（替换了之前的 tsdown 构建），
+ * 因此该接口继承 [Vite UserConfig](https://vite.dev/config/) 的所有顶层配置。
+ *
+ * 由插件管理、不参与继承的字段：`configFile`、`base`、`root`、`build`。
  */
 export interface ExtensionOptions
-  extends Omit<
-    InlineConfig,
-    'entry' | 'format' | 'outDir' | 'watch'
-  > {
+  extends Omit<ViteOptions, 'configFile' | 'base' | 'root' | 'build'> {
   /**
    * 插件入口文件.
    * @default "extension/index.ts"
    */
-  entry?: string;
+  entry?: string | string[] | Record<string, string>;
+  /**
+   * 插件编译格式. 默认根据 `package.json` 的 `type` 字段.
+   */
+  format?: 'cjs' | 'esm';
   /**
    * 插件编译后文件输出目录. 默认 `dist-extension`.
    *
@@ -20,11 +26,52 @@ export interface ExtensionOptions
    */
   outDir?: string;
   /**
-   * `tsdown`默认监听当前工作目录。可以设置需要监听的文件，这可能会提高性能。
-   *
-   * 如果未指定值，则 `recommended` 参数为 `true` 时的默认值为 `["extension"]`，否则为 `tsdown` 默认行为
+   * 不打进产物中的模块. `hbuilderx` 和 Node.js 内置模块始终会被排除.
+   */
+  external?: Arrayable<string | RegExp> | ((id: string, parentId?: string, isResolved?: boolean) => boolean | void);
+  /**
+   * 构建前清空输出目录.
+   * @default true
+   */
+  clean?: boolean;
+  /**
+   * 是否启用 tree-shaking.
+   * @default 生产环境 true，开发环境 false
+   */
+  treeshake?: boolean;
+  /**
+   * 构建目标，传给 Vite 的 `build.target`.
+   * @default cjs: ['es2019', 'node16']，esm: 'node20'
+   */
+  target?: string | string[] | false;
+  /**
+   * 是否生成 sourcemap.
+   * @default 开发环境 true，生产环境 false
+   */
+  sourcemap?: boolean | 'inline' | 'hidden';
+  /**
+   * 压缩输出. `true` 是 `'oxc'` 的别名.
+   * @default 开发环境 false，生产环境 true
+   */
+  minify?: boolean | 'oxc' | 'terser' | 'esbuild';
+  /**
+   * 开发模式下额外监听的文件或目录. vite 模块依赖图始终会被监听，这里仅用于依赖图之外的文件.
    */
   watchFiles?: string | string[];
+  /**
+   * 开发模式忽略监听的文件或目录.
+   * @default ['.history', '.temp', '.tmp', '.cache', 'dist']
+   */
+  ignoreWatch?: Arrayable<string | RegExp>;
+  /**
+   * 每次构建成功后执行的 shell 命令或回调.
+   */
+  onSuccess?: string | ((config?: unknown, signal?: unknown) => void | Promise<void>);
+  /**
+   * 通过 Vite 的 `define` 内联到产物中的环境变量.
+   * @internal
+   */
+  env?: Record<string, string>;
 }
 
 /**

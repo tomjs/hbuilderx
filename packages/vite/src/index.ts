@@ -1,15 +1,13 @@
-import type { InlineConfig as TsdownOptions } from 'tsdown';
-import type { PluginOption, ResolvedConfig, UserConfig } from 'vite';
+import type { Plugin, PluginOption, ResolvedConfig, UserConfig } from 'vite';
 import type { ExtensionOptions, PluginOptions, WebviewOption } from './types';
 import fs from 'node:fs';
 import path from 'node:path';
 import { cwd } from 'node:process';
 import { readFileSync, readJsonSync } from '@tomjs/node';
-import { execa } from 'execa';
 import merge from 'lodash.merge';
 import { parse as htmlParser } from 'node-html-parser';
 import colors from 'picocolors';
-import { build as tsdownBuild } from 'tsdown';
+import { runExtensionBuild, runExtensionServe } from './build';
 import { ORG_NAME, RESOLVED_VIRTUAL_MODULE_ID, VIRTUAL_MODULE_ID } from './constants';
 import { logger } from './logger';
 import { resolveServerUrl } from './utils';
@@ -34,6 +32,7 @@ function getPkg() {
 
 function preMergeOptions(options?: PluginOptions): PluginOptions {
   const pkg = getPkg();
+  const format = pkg.type === 'module' ? 'esm' : 'cjs';
 
   const opts: PluginOptions = merge(
     {
@@ -42,16 +41,10 @@ function preMergeOptions(options?: PluginOptions): PluginOptions {
       extension: {
         entry: 'extension/index.ts',
         outDir: 'dist-extension',
-        target: ['es2019', 'node16'],
-        format: 'cjs',
-        shims: true,
+        target: format === 'esm' ? ['node20'] : ['es2019', 'node16'],
+        format,
         clean: true,
-        dts: false,
         treeshake: !isDev,
-        publint: false,
-        // ignore tsdown.config.ts/.mts from project
-        config: false,
-        fixedExtension: false,
         external: ['hbuilderx'],
       } as ExtensionOptions,
     } as PluginOptions,
@@ -61,7 +54,7 @@ function preMergeOptions(options?: PluginOptions): PluginOptions {
   const opt = opts.extension || {};
 
   if (isDev) {
-    // opt.sourcemap = opt.sourcemap ?? true;
+    opt.sourcemap = opt.sourcemap ?? true;
   }
   else {
     opt.minify ??= true;
@@ -81,15 +74,35 @@ function preMergeOptions(options?: PluginOptions): PluginOptions {
     };
   }
 
-  if (!isDev && !opt.skipNodeModulesBundle && !opt.noExternal) {
-    opt.noExternal = Object.keys(pkg.dependencies || {}).concat(
-      Object.keys(pkg.peerDependencies || {}),
-    );
-  }
-
   opts.extension = opt;
 
   return opts;
+}
+
+/**
+ * 创建将生成的 webview 代码通过 `virtual:hbuilderx` 模块注入的插件，
+ * 在编译用户的 hbuilderx 插件时使用。
+ */
+function createInjectPlugin(
+  code: string,
+  watchChange?: (id: string, event: { event: 'create' | 'update' | 'delete' }) => void,
+): Plugin {
+  return {
+    name: `${ORG_NAME}:hbuilderx:inject`,
+    resolveId(id) {
+      if (id === VIRTUAL_MODULE_ID) {
+        return RESOLVED_VIRTUAL_MODULE_ID;
+      }
+    },
+    load(id) {
+      if (id === RESOLVED_VIRTUAL_MODULE_ID) {
+        return code;
+      }
+    },
+    watchChange(id, event) {
+      watchChange?.(id, event);
+    },
+  };
 }
 
 function genProdWebviewCode(cache: Record<string, string>) {
@@ -253,65 +266,32 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
             VITE_DEV_SERVER_URL: resolveServerUrl(server),
           };
 
-          let flag = false;
-
           const webview = opts?.webview as WebviewOption;
 
-          const { onSuccess: _onSuccess, ignoreWatch, logLevel, watchFiles, ...tsdownOptions } = opts.extension || {};
-          const entryDir = path.dirname(tsdownOptions.entry);
+          if (opts.extension) {
+            opts.extension.env = env;
+          }
 
-          await tsdownBuild(
-            merge(tsdownOptions, {
-              watch: watchFiles ?? (opts.recommended ? ['extension'] : true),
-              ignoreWatch: (['.history', '.temp', '.tmp', '.cache', 'dist'] as (string | RegExp)[]).concat(Array.isArray(ignoreWatch) ? ignoreWatch : []),
-              env,
-              logLevel: logLevel ?? 'silent',
-              plugins: !webview
-                ? []
-                : [
-                    {
-                      name: `${ORG_NAME}:hbuilderx:inject`,
-                      resolveId(id) {
-                        if (id === VIRTUAL_MODULE_ID) {
-                          return RESOLVED_VIRTUAL_MODULE_ID;
-                        }
-                      },
-                      load(id) {
-                        if (id === RESOLVED_VIRTUAL_MODULE_ID)
-                          return devWebviewVirtualCode;
-                      },
-                      watchChange(id, e) {
-                        let event = '';
-                        if (e.event === 'update') {
-                          event = colors.green('更新');
-                        }
-                        else if (e.event === 'delete') {
-                          event = colors.red('删除');
-                        }
-                        else {
-                          event = colors.blue('创建');
-                        }
-                        logger.info(`${event} ${colors.dim(path.relative(entryDir, id))}`);
-                      },
-                    },
-                  ],
-              async onSuccess(config, signal) {
-                if (_onSuccess) {
-                  if (typeof _onSuccess === 'string') {
-                    await execa(_onSuccess);
+          const entryDir = path.dirname(opts.extension?.entry as string);
+          const plugins = !webview
+            ? []
+            : [
+                createInjectPlugin(devWebviewVirtualCode, (id, e) => {
+                  let event = '';
+                  if (e.event === 'update') {
+                    event = colors.green('更新');
                   }
-                  else if (typeof _onSuccess === 'function') {
-                    await _onSuccess(config, signal);
+                  else if (e.event === 'delete') {
+                    event = colors.red('删除');
                   }
-                }
+                  else {
+                    event = colors.blue('创建');
+                  }
+                  logger.info(`${event} ${colors.dim(path.relative(entryDir, id))}`);
+                }),
+              ];
 
-                if (!flag) {
-                  flag = true;
-                  logger.info('插件编译服务启动成功');
-                }
-              },
-            } as TsdownOptions),
-          );
+          await runExtensionServe(opts.extension!, plugins);
         });
 
         if (opts.devtools) {
@@ -365,7 +345,7 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
         prodHtmlCache[ctx.chunk?.name as string] = html;
         return html;
       },
-      closeBundle() {
+      async closeBundle() {
         let webviewVirtualCode: string;
 
         const webview = opts?.webview as WebviewOption;
@@ -382,43 +362,15 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
           VITE_WEBVIEW_DIST: outDir,
         };
 
-        logger.info('extension build start');
+        if (opts.extension) {
+          opts.extension.env = env;
+        }
 
-        const { onSuccess: _onSuccess, logLevel, ...tsupOptions } = opts.extension || {};
+        const plugins = !webview
+          ? []
+          : [createInjectPlugin(webviewVirtualCode)];
 
-        tsdownBuild(
-          merge(tsupOptions, {
-            env,
-            logLevel: logLevel ?? 'silent',
-            plugins: !webview
-              ? []
-              : [
-                  {
-                    name: `${ORG_NAME}:hbuilderx:inject`,
-                    resolveId(id) {
-                      if (id === VIRTUAL_MODULE_ID) {
-                        return RESOLVED_VIRTUAL_MODULE_ID;
-                      }
-                    },
-                    load(id) {
-                      if (id === RESOLVED_VIRTUAL_MODULE_ID)
-                        return webviewVirtualCode;
-                    },
-                  },
-                ],
-            async onSuccess(config, signal) {
-              if (_onSuccess) {
-                if (typeof _onSuccess === 'string') {
-                  await execa(_onSuccess);
-                }
-                else if (typeof _onSuccess === 'function') {
-                  await _onSuccess(config, signal);
-                }
-              }
-              logger.info('extension build success');
-            },
-          } as TsdownOptions),
-        );
+        await runExtensionBuild(opts.extension!, plugins);
       },
     },
   ];
