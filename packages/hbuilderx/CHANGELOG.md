@@ -1,3 +1,7 @@
+## [2.0.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.2.0...hbuilderx%402.0.0) (2026-09-05)
+
+- feat: 补充新的 hbuilderx 定义  [f120a99](https://github.com/tomjs/hbuilderx/commit/f120a99)
+
 ## [1.2.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.1.0...hbuilderx%401.2.0) (2026-01-03)
 
 - feat: 新增初始插件方法  [f8a9a0b](https://github.com/tomjs/hbuilderx/commit/f8a9a0b)
