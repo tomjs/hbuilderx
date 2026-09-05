@@ -2,6 +2,6 @@
   "extends": "@tomjs/tsconfig/node.json",
   "include": [
     "src",
-    "tsdown.config.ts"
+    "tsdown.config.mts"
   ]
 }

@@ -30,11 +30,37 @@ declare module 'hbuilderx' {
   /**
    * 工作空间文档编辑
    */
-  export const WorkspaceEdit: WorkspaceEdit;
+  export class WorkspaceEdit {
+    /**
+     * 构造 WorkspaceEdit 对象
+     */
+    constructor();
+    /**
+     * 设置指定文档uri的编辑操作列表
+     */
+    set: (uri: string | Uri, edits: TextEdit[]) => Promise<void>;
+  }
   /**
    * 文本编辑
    */
-  export const TextEdit: TextEdit;
+  export class TextEdit {
+    /**
+     * 构造 TextEdit 对象
+     */
+    constructor(range: IRange, newText: string);
+    /**
+     * 要修改的区域
+     */
+    range: IRange;
+    /**
+     * 要插入的新内容
+     */
+    newText: string;
+    /**
+     * 静态方法, 生成replace的TextEdit对象
+     */
+    static replace: (range: IRange, newText: string) => TextEdit;
+  }
   /**
    * TreeView树控件获取数据的接口
    */
@@ -51,6 +77,44 @@ declare module 'hbuilderx' {
    * 插件授权登录
    */
   export const authorize: Authorize;
+  /**
+   * 插件 CLI 控制台，配合 registerCliCommand 使用，将插件内的日志输出到终端
+   */
+  export const cliconsole: CliConsole;
+  /**
+   * JSON 读写工具
+   */
+  export const util: Util;
+  /**
+   * 状态栏元素对齐方式
+   */
+  export enum StatusBarAlignment {
+    /**
+     * 左侧
+     */
+    Left = 1,
+    /**
+     * 右侧
+     */
+    Right = 2,
+  }
+  /**
+   * 事件发射器，可 new 创建，用于 TreeDataProvider 刷新、CustomEditor 数据变更等
+   */
+  export class EventEmitter {
+    /**
+     * 构造 EventEmitter 对象
+     */
+    constructor();
+    /**
+     * 订阅事件，如赋值给 TreeDataProvider.onDidChangeTreeData
+     */
+    event: Event<any>;
+    /**
+     * 向订阅者发送事件
+     */
+    fire: (event?: any) => void;
+  }
 
   /**
    * env二级模块对象，包含运行环境信息和系统交互相关的方法
@@ -99,6 +163,62 @@ declare module 'hbuilderx' {
   interface UriHandler {
     handleUri: (result: Uri) => void;
   }
+
+  /**
+   * 插件 CLI 控制台，将插件内的日志输出到终端
+   */
+  interface CliConsole {
+    /**
+     * 输出日志到终端，配合 registerCliCommand 使用
+     */
+    log: (options: CliConsoleLogOptions) => Promise<void>;
+  }
+
+  interface CliConsoleLogOptions {
+    /**
+     * 必填，从 registerCliCommand 回调参数 cliconsole.clientId 解析
+     */
+    clientId: string;
+    /**
+     * 日志内容
+     */
+    msg: string;
+    /**
+     * Info / Error（Error 代表终止终端输出，通常不用）
+     * @default "Info"
+     */
+    status?: 'Info' | 'Error';
+    /**
+     * 是否显示时间日期
+     * @default true
+     */
+    hideTime?: boolean;
+  }
+
+  /**
+   * JSON 读写工具
+   */
+  interface Util {
+    /**
+     * 读取 JSON 中指定 key 的值
+     */
+    readJSONValue: (filePath: string, key: string) => Promise<any>;
+    /**
+     * 写入 JSON 中指定 key 的值
+     */
+    writeJSONValue: (filePath: string, key: string, value: any) => Promise<any>;
+  }
+
+  /**
+   * 资源释放接口，插件卸载时自动释放
+   */
+  interface Disposable {
+    dispose: () => any;
+  }
+
+  type Thenable<T> = PromiseLike<T>;
+
+  type Event<T> = (listener: (event: T) => any) => any;
 
   interface ShowWebviewInfo {
     /**
@@ -160,6 +280,10 @@ declare module 'hbuilderx' {
      * 创建一个输出控制台
      */
     createOutputChannel: (channel: string) => OutputChannel;
+    /**
+     * 创建状态栏元素
+     */
+    createStatusBarItem: (alignment?: StatusBarAlignment, priority?: number) => StatusBarItem;
     /**
      * 创建指定viewId的视图，将会以tab的形式在左侧显示。viewId是在配置扩展点views中声明的id
      */
@@ -318,6 +442,10 @@ declare module 'hbuilderx' {
      */
     onDidReceiveMessage: (callback: (result: any) => void) => void;
     /**
+     * 向 webview 发送消息
+     */
+    postMessage: (message: any) => Thenable<any>;
+    /**
      * 将本地资源转换成可在WebView中加载的Uri。
      */
     asWebviewUri: (Uri: Uri) => Uri;
@@ -357,6 +485,10 @@ declare module 'hbuilderx' {
   }
 
   interface TreeDataProvider {
+    /**
+     * 数据变化事件，通知刷新视图（目前仅支持整个视图刷新）
+     */
+    onDidChangeTreeData: Event<any>;
     /**
      * 获取某个节点的下的子节点，如果参数为空，则表示要获取根节点
      */
@@ -556,6 +688,36 @@ declare module 'hbuilderx' {
     end: number;
   }
 
+  /**
+   * 文本区域，等价于 IRange
+   */
+  type Range = IRange;
+
+  /**
+   * 线条和字符位置（从 0 开始）
+   */
+  interface Position {
+    /**
+     * 行号
+     */
+    line: number;
+    /**
+     * 列号
+     */
+    character: number;
+  }
+
+  interface Selection {
+    /**
+     * 选择区域中带光标的一侧
+     */
+    active: number;
+    /**
+     * 选择区域中不带光标的一侧
+     */
+    anchor: number;
+  }
+
   interface TextEditor {
     /**
      * 当前光标选中的位置
@@ -619,6 +781,49 @@ declare module 'hbuilderx' {
     show: () => Promise<void>;
   }
 
+  interface StatusBarItem {
+    /**
+     * 显示的文本，支持 $(icon-name) 图标，需在 contributes/icons 配置
+     */
+    text: string;
+    /**
+     * 鼠标悬浮提示
+     */
+    tooltip: string;
+    /**
+     * 文本颜色
+     */
+    color: string;
+    /**
+     * 背景颜色
+     */
+    backgroundColor: string;
+    /**
+     * 单击执行命令
+     */
+    command: string;
+    /**
+     * 名称
+     */
+    name: string;
+    /**
+     * id
+     */
+    id: string;
+    /**
+     * 显示状态栏元素
+     */
+    show: () => void;
+    /**
+     * 隐藏状态栏元素
+     */
+    hide: () => void;
+    /**
+     * 释放资源
+     */
+    dispose: () => void;
+  }
+
   interface Workspace {
     /**
      * 获取项目管理器下所有的项目对象（不包含已关闭项目）
@@ -669,6 +874,10 @@ declare module 'hbuilderx' {
      */
     copyFileWithPrompt: (options: CopyFileWithPromptOptions) => Promise<string>;
     /**
+     * 跳转到【设置】【插件配置】指定项
+     */
+    gotoConfiguration: (section: string) => void;
+    /**
      * 配置代码块可打印最近变量
      */
     registerSnippetVariableResolver: (nearestVar: string, callback: () => void) => string;
@@ -698,9 +907,29 @@ declare module 'hbuilderx' {
      */
     registerTextEditorCommand: (id: string, handler: (result: TextEditor) => void) => Disposable;
     /**
+     * 注册一个 cli 命令，配合 contributes.clicommands 使用
+     */
+    registerCliCommand: (id: string, handler: (params: CliCommandParams) => void) => Disposable;
+    /**
      * 执行指定id的命令。除了插件扩展的命令外，还可以执行HBuilderX内置的命令，完整的内置命令列表可以通过HBuilderX的顶部菜单工具-自定义快捷键，然后在打开的配置文件左侧部门找到所有列出的command字段.
      */
     executeCommand: (id: string) => void;
+  }
+
+  interface CliCommandParams {
+    /**
+     * cli 命令参数
+     */
+    args: any;
+    /**
+     * 输出日志到终端时的标识
+     */
+    cliconsole: {
+      /**
+       * 传递到 cliconsole.log 的 clientId
+       */
+      clientId: string;
+    };
   }
 
   interface LanguageManager {
@@ -708,6 +937,72 @@ declare module 'hbuilderx' {
      * 创建一个问题列表
      */
     createDiagnosticCollection: (name: string) => DiagnosticCollection;
+    /**
+     * 注册行内代码补全提供者
+     */
+    registerInlineCompletionItemProvider: (selector: DocumentSelector, provider: InlineCompletionItemProvider) => Disposable;
+  }
+
+  interface InlineCompletionItemProvider {
+    provideInlineCompletionItems: (
+      document: TextDocument,
+      position: Position,
+      context: InlineCompletionContext,
+      token: CancellationToken,
+    ) => InlineCompletionList | Promise<InlineCompletionList>;
+  }
+
+  interface InlineCompletionList {
+    items: InlineCompletionItem[];
+  }
+
+  interface InlineCompletionItem {
+    /**
+     * 要展示的文本
+     */
+    insertText: string;
+    /**
+     * 要替换的范围，缺省用所请求位置的单词
+     */
+    range?: IRange;
+    /**
+     * 插入后要执行的命令
+     */
+    command?: Command;
+  }
+
+  interface InlineCompletionContext {
+    triggerKind: number;
+    selectedCompletionInfo?: any;
+  }
+
+  interface CancellationToken {
+    isCancellationRequested: boolean;
+    onCancellationRequested: Event<any>;
+  }
+
+  interface DocumentFilter {
+    language?: string;
+    scheme?: string;
+    pattern?: string;
+  }
+
+  type DocumentSelector = string | DocumentFilter | (string | DocumentFilter)[];
+
+  interface Command {
+    /**
+     * 命令标题
+     */
+    title: string;
+    /**
+     * 命令 id
+     */
+    command: string;
+    /**
+     * 执行命令时传递的参数
+     */
+    arguments?: any[];
+    tooltip?: string;
   }
 
   interface DiagnosticCollection {
@@ -743,28 +1038,6 @@ declare module 'hbuilderx' {
     severity: string;
   }
 
-  interface WorkspaceEdit {
-    /**
-     * 设置指定文档uri的编辑操作列表
-     */
-    set: (uri: string | Uri, edits: TextEdit[]) => Promise<void>;
-  }
-
-  interface TextEdit {
-    /**
-     * 要修改的区域
-     */
-    range: IRange;
-    /**
-     * 要插入的新内容
-     */
-    newText: string;
-    /**
-     * 静态方法, 生成replace的TextEdit对象
-     */
-    replace: (range: IRange, newText: string) => TextEdit;
-  }
-
   interface WorkspaceFolder {
     /**
      * 项目目录文件地址
@@ -782,6 +1055,14 @@ declare module 'hbuilderx' {
      * 项目唯一id
      */
     id: string;
+    /**
+     * uni-app 项目 appid
+     */
+    appid?: string;
+    /**
+     * uni-app 项目 vue 版本
+     */
+    vueVersion?: string;
   }
 
   /**
@@ -842,6 +1123,14 @@ declare module 'hbuilderx' {
     path: string;
     query: string;
     scheme: string;
+    /**
+     * 根据本地文件路径构造 Uri
+     */
+    file: (path: string) => Uri;
+    /**
+     * 返回 Uri 的字符串表示
+     */
+    toString: () => string;
   }
 
   interface CustomEditor {
@@ -889,13 +1178,6 @@ declare module 'hbuilderx' {
      * 用户执行“另存为”操作时，HBuilderX调用该方法
      */
     saveCustomDocumentAs: (document: CustomDocument, destination: string) => Promise<void>;
-  }
-
-  interface EventEmitter {
-    /**
-     * 向订阅者发送事件
-     */
-    fire: (event: any) => void;
   }
 
   interface AuthorizeLoginResult {

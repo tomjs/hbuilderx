@@ -3,6 +3,7 @@
   "include": [
     "src/**/*.ts",
     "*.d.ts",
-    "*.config.ts"
+    "*.config.ts",
+    "*.config.mts"
   ]
 }

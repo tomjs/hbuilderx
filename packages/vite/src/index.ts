@@ -49,7 +49,7 @@ function preMergeOptions(options?: PluginOptions): PluginOptions {
         dts: false,
         treeshake: !isDev,
         publint: false,
-        // ignore tsdown.config.ts from project
+        // ignore tsdown.config.ts/.mts from project
         config: false,
         fixedExtension: false,
         external: ['hbuilderx'],
