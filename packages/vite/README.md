@@ -276,6 +276,7 @@ interface WebviewHtmlOptions {
 | recommended | `boolean`                                                | `true`               | 这个选项是为了提供推荐的默认参数和行为                                                                                                                                         |
 | extension   | [ExtensionOptions](#ExtensionOptions)                    |                      | hbuilderx extension 可选配置                                                                                                                                                   |
 | webview     | `boolean` \| `string` \| [WebviewOption](#WebviewOption) | `__getWebviewHtml__` | 注入 html 代码                                                                                                                                                                 |
+| strict      | `boolean`                                                | `true`               | 是否启用严格模式，启用后会检测必须在 hbuilderx 的 webview 环境中运行，可通过 `VITE_HBUILDERX_STRICT` 环境变量覆盖（优先级更高）                                                |
 | devtools    | `boolean`                                                | `false`              | 注入 script 代码用于 [react-devtools](https://github.com/facebook/react/tree/main/packages/react-devtools) 或 [vue-devtools](https://devtools.vuejs.org/guide/standalone) 调试 |
 
 #### Notice
@@ -314,9 +315,9 @@ interface WebviewHtmlOptions {
 
 ### WebviewOption
 
-| 参数名     | 类型     | 默认值                     | 说明   |
-| ---------- | -------- | -------------------------- | ------ |
-| refreshKey | `string` | 开发模式时刷新页面的快捷键 | `"F6"` |
+| 参数名     | 类型     | 默认值 | 说明                       |
+| ---------- | -------- | ------ | -------------------------- |
+| refreshKey | `string` | `"F6"` | 开发模式时刷新页面的快捷键 |
 
 ### 补充说明
 
@@ -329,6 +330,14 @@ interface WebviewHtmlOptions {
 | target    | `['es2019','node16']`（esm 为 `'node20'`） | 同开发模式     |
 
 ## 环境变量
+
+### 插件配置
+
+以下环境变量由插件自身在启动时读取
+
+| 变量                    | 描述                                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `VITE_HBUILDERX_STRICT` | 是否启用严格模式，优先级高于插件配置的 `strict` 参数，`'true'` 启用，`'false'` 禁用，支持通过 vite `.env` 文件配置 |
 
 `hbuilderx extension` 使用
 

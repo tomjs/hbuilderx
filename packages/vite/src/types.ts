@@ -114,6 +114,12 @@ export interface PluginOptions {
    */
   webview?: boolean | WebviewOption;
   /**
+   * 是否启用严格模式，启用后会检测必须在 hbuilderx 的 webview 环境中运行.
+   * 优先级低于 `VITE_HBUILDERX_STRICT` 环境变量.
+   * @default true
+   */
+  strict?: boolean;
+  /**
    * 插件配置
    */
   extension?: ExtensionOptions;

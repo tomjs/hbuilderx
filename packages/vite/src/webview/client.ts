@@ -1,4 +1,5 @@
-if (window.top === window.self) {
+// @ts-ignore
+if (window.TOMJS_STRICT && window.top === window.self) {
   throw new Error('[hbuilderx:client]: must run in hbuilderx webview');
 }
 
@@ -19,7 +20,7 @@ window.hbuilderx = window.hbuilderx || (function () {
       }
     }
   }
-  function onDidReceiveMessage(callback) {
+  function onDidReceiveMessage(callback: any) {
     msgListeners.push(callback);
   }
 

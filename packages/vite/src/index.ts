@@ -158,6 +158,18 @@ export default getWebviewHtml;
   return code;
 }
 
+/**
+ * 解析是否启用严格模式. `VITE_HBUILDERX_STRICT` 环境变量优先级最高（支持 vite `.env` 文件，读取自 `config.env`），
+ * 其次为插件配置 `strict`，默认 `true`.
+ */
+function resolveStrict(opts: PluginOptions, env: Record<string, any> = {}): boolean {
+  const envStrict = env.VITE_HBUILDERX_STRICT ?? process.env.VITE_HBUILDERX_STRICT;
+  if (envStrict !== undefined && envStrict !== '') {
+    return !['false', '0', 'no'].includes(envStrict.toLowerCase());
+  }
+  return opts.strict ?? true;
+}
+
 export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
   const opts = preMergeOptions(options);
 
@@ -250,7 +262,10 @@ export function useHBuilderxPlugin(options?: PluginOptions): PluginOption {
             refreshKey = opts.webview.refreshKey;
           }
           if (refreshKey) {
-            devWebviewClientCode = `window.TOMJS_REFRESH_KEY="${refreshKey}";${devWebviewClientCode}`;
+            devWebviewClientCode = [`window.TOMJS_REFRESH_KEY="${refreshKey}"`, devWebviewClientCode].join(';');
+          }
+          if (resolveStrict(opts, resolvedConfig.env)) {
+            devWebviewClientCode = [`window.TOMJS_STRICT=true`, devWebviewClientCode].join(';');
           }
 
           devWebviewVirtualCode = readFileSync(path.join(__dirname, 'webview.js'));
