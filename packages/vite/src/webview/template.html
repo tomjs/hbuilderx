@@ -29,49 +29,71 @@
 
     <script type="module" id="webview-patch">
       const TAG = '[@tomjs:hbuilderx:extension] ';
+      const POST_MESSAGE_TYPE = '[hbuilderx:client]:postMessage';
+      const SERVER_URL = '{{serverUrl}}';
 
-      function onDomReady(callback, doc) {
-        const _doc = doc || document;
-        if (_doc.readyState === 'interactive' || _doc.readyState === 'complete') {
+      let iframe = null;
+      let iframeLoaded = false;
+      // 插件 → iframe 方向的消息缓存：iframe 未就绪时先暂存，就绪后按序补发
+      const cacheMessages = [];
+
+      function onDomReady(callback, doc = document) {
+        if (doc.readyState === 'interactive' || doc.readyState === 'complete') {
           callback();
         } else {
-          _doc.addEventListener('DOMContentLoaded', callback);
+          doc.addEventListener('DOMContentLoaded', callback);
         }
       }
 
-      // message handler
-      let iframeLoaded = false;
-      const cacheMessages = [];
+      function flushCache() {
+        if (!iframe || !iframeLoaded || !iframe.contentWindow) {
+          return;
+        }
+        while (cacheMessages.length) {
+          iframe.contentWindow.postMessage(cacheMessages.shift(), '*');
+        }
+      }
 
-      onDomReady(function () {
-        /**  @type {HTMLIFrameElement} */
-        const iframe = document.getElementById('webview-patch-iframe');
+      // 插件 → iframe：收到插件消息后转发给 vite dev server 页面。
+      // 注意不能直接用 iframe.contentDocument（跨域会抛错），用 load 事件判断就绪。
+      function forwardToIframe(message) {
+        if (!iframe || !iframe.contentWindow) {
+          return;
+        }
+        if (iframeLoaded) {
+          iframe.contentWindow.postMessage(message, '*');
+        } else {
+          cacheMessages.push(message);
+        }
+      }
 
-        onDomReady(function () {
-          iframeLoaded = true;
-        }, iframe.contentDocument);
+      if (typeof hbuilderx !== 'undefined' && hbuilderx.onDidReceiveMessage) {
+        hbuilderx.onDidReceiveMessage(forwardToIframe);
+      }
 
-        iframe.addEventListener('load', function (e) {
-          iframeLoaded = true;
-        });
-      });
-
-      function handleMessage(e) {
-        const iframe = document.getElementById('webview-patch-iframe');
+      // iframe → 插件：仅转发由 client.ts 发出的 postMessage
+      window.addEventListener('message', (event) => {
         if (!iframeLoaded || !iframe) {
           return;
         }
-        if ('{{serverUrl}}'.startsWith(e.origin)) {
-          const { type, data } = e.data;
-          console.log(TAG + ' received:', e.data);
-          if (type === '[hbuilderx:client]:postMessage') {
-            hbuilderx.postMessage(data);
-          }
+        if (!SERVER_URL.startsWith(event.origin)) {
+          return;
         }
-      }
+        const { type, data } = event.data || {};
+        if (type === POST_MESSAGE_TYPE) {
+          hbuilderx.postMessage(data);
+        }
+      });
 
-      window.addEventListener('message', function (event) {
-        handleMessage(event);
+      onDomReady(() => {
+        iframe = document.getElementById('webview-patch-iframe');
+        if (!iframe) {
+          return;
+        }
+        iframe.addEventListener('load', () => {
+          iframeLoaded = true;
+          flushCache();
+        });
       });
     </script>
   </head>

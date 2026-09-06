@@ -11,6 +11,13 @@ function onPostMessage() {
     text: `HelloWorld-${Date.now()}`,
   });
 }
+
+function onSendToBackend() {
+  hbuilderx.postMessage({
+    command: 'ping',
+    text: `HelloWorld-${Date.now()}`,
+  });
+}
 </script>
 
 <template>
@@ -22,6 +29,9 @@ function onPostMessage() {
     </button>
     <button type="button" style="margin-left: 12px;" @click="onPostMessage">
       发送消息
+    </button>
+    <button type="button" style="margin-left: 12px;" @click="onSendToBackend">
+      发送给后端
     </button>
   </div>
 </template>

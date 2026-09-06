@@ -1,5 +1,18 @@
 <script setup lang="ts">
+import { Modal } from 'antdv-next';
+import { onMounted } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue';
+
+onMounted(() => {
+  hbuilderx.onDidReceiveMessage((msg) => {
+    if (msg.command === 'ping-back') {
+      Modal.info({
+        title: '后端消息',
+        content: msg.text,
+      });
+    }
+  });
+});
 </script>
 
 <template>

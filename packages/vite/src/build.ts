@@ -64,7 +64,7 @@ export function toViteConfig(
     target,
     sourcemap,
     minify,
-    watchFiles: _watchFiles,
+    watchFiles,
     ignoreWatch,
     onSuccess: _onSuccess,
     env,
@@ -73,6 +73,8 @@ export function toViteConfig(
   } = opt as unknown as Record<string, any>;
 
   const isEsm = format !== 'cjs';
+
+  const watchFilesList = arrayable(watchFiles);
 
   const define: Record<string, string> = {};
   if (env) {
@@ -118,7 +120,11 @@ export function toViteConfig(
       // rollupOptions 兼容 vite 5-8（vite 8 中作为 rolldownOptions 的 deprecated alias 仍可用）
       rollupOptions: bundleOptions,
       watch: isServe
-        ? { exclude: [...DEFAULT_IGNORE_WATCH, ...(arrayable(ignoreWatch) || [])] }
+        ? {
+            // 依赖图之外需额外监听的文件/目录
+            ...(watchFilesList ? { include: watchFilesList } : {}),
+            exclude: [...DEFAULT_IGNORE_WATCH, ...(arrayable(ignoreWatch) || [])],
+          }
         : undefined,
     },
   };
@@ -163,7 +169,7 @@ export async function runExtensionServe(options: ExtensionOptions, plugins: Plug
 
     if (!buildFlag) {
       buildFlag = true;
-      logger.info('插件编译服务启动成功');
+      logger.info('extension build service started');
     }
   };
 

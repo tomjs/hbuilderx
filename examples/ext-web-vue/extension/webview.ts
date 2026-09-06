@@ -23,6 +23,12 @@ function showWebView(webviewPanel: WebViewPanel | WebViewDialog) {
     if (msg.command === 'alert') {
       window.showInformationMessage(msg.text);
     }
+    if (msg.command === 'ping') {
+      webview.postMessage({
+        command: 'ping-back',
+        text: `后端已收到消息: ${msg.text}`,
+      });
+    }
   });
 };
 

@@ -98,6 +98,7 @@
   },
   "dependencies": {
     "@tomjs/hbuilderx": "workspace:*",
+    "antdv-next": "^1.5.3",
     "vue": "^3.5.26"
   },
   "devDependencies": {
