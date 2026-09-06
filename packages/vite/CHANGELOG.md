@@ -1,3 +1,7 @@
+## [2.0.1](https://github.com/tomjs/hbuilderx/compare/vite%402.0.0...vite%402.0.1) (2026-09-06)
+
+- feat: vite 增加 strict 配置  [0a51290](https://github.com/tomjs/hbuilderx/commit/0a51290)
+
 ## [2.0.0](https://github.com/tomjs/hbuilderx/compare/vite%401.3.0...vite%402.0.0) (2026-09-05)
 
 - feat: vite plugin use vite8  [72c1134](https://github.com/tomjs/hbuilderx/commit/72c1134)
