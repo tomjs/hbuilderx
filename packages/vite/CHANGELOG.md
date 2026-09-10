@@ -1,3 +1,7 @@
+## [2.1.1](https://github.com/tomjs/hbuilderx/compare/vite%402.1.0...vite%402.1.1) (2026-09-11)
+
+- fix: 支持复制粘贴快捷键  [3be850d](https://github.com/tomjs/hbuilderx/commit/3be850d)
+
 ## [2.1.0](https://github.com/tomjs/hbuilderx/compare/vite%402.0.1...vite%402.1.0) (2026-09-06)
 
 - fix: 修复消息通讯问题  [0652482](https://github.com/tomjs/hbuilderx/commit/0652482)
