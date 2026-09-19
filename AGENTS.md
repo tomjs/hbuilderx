@@ -26,6 +26,15 @@ pnpm workspace monorepo (`@tomjs/hbuilderx`): TypeScript tooling for HBuilderX p
 - **`ts/no-misused-new` lint rule**: interfaces can't carry construct signatures. For `new hx.X()` APIs, declare `export class X { constructor(); ... }` in the d.ts (already done for `TextEdit`/`WorkspaceEdit`/`EventEmitter`).
 - HBuilderX plugins run on Node v16.17.0 CommonJS — keep example/plugin `"type": "commonjs"` with CJS `main` output.
 
+## Updating `packages/hbuilderx/hbuilderx.d.ts`
+
+The file is a hand-maintained **superset** of the official d.ts, so update it by diffing against two sources and only adding/fixing what the docs confirm is missing or stale — don't blindly copy the official file over it (that would drop the `export class`/enriched typings).
+
+- Sources: (1) the local official d.ts `/Applications/HBuilderX.app/Contents/HBuilderX/plugins/hbuilderx-language-services/builtin-dts/common/extension_js.d.ts`; (2) the online API docs, repo `dcloudio/hbuilderx-extension-docs`, path `zh-cn/ExtensionDocs/Api` (list files via `https://api.github.com/repos/dcloudio/hbuilderx-extension-docs/git/trees/master?recursive=1`, then read raw `https://raw.githubusercontent.com/.../zh-cn/ExtensionDocs/Api/<module>/<api>.md`).
+- Method: for each module (`windows`/`workspace`/`env`/`languages`/`cli`/`util`/`other`), compare the doc's property/method tables against the matching interface and add missing members, widen over-narrow types (e.g. `Configuration.get` → `any`), and make doc-optional params actually optional (e.g. `setStatusBarMessage`). Keep the property-style (`foo: (...) => ...`) signature/field convention and existing comment density.
+- `showFormDialog` widgets: `FormItemOptions`/`FormDialogOptions` must cover every documented control (`label`/`input`/`fileSelectInput`/`radioGroup`/`list`/`checkBox`/`spaceList`/`textEditor`/`comboBox`/`widgetGroup` + `button`/`radioButton` sub-controls) and the `validate`/`onChanged`/`onOpened` callbacks (typed via `FormDialogContext` for the `this.showError`/`this.updateForm` API); form-item fields are optional since each control uses only a subset.
+- Verify: `pnpm exec tsc --noEmit -p tsconfig.json` in `packages/hbuilderx` + `pnpm exec eslint packages/hbuilderx/hbuilderx.d.ts` (both must pass). Do not auto-commit — leave changes for the user to review.
+
 ## Webview client typing
 
 `@tomjs/hbuilderx/client` (`client.d.ts`) declares the browser-side `window.hbuilderx` global (`postMessage`/`onDidReceiveMessage`/`dispatchMessage`) for vue/react webview apps — reference it via `/// <reference types="@tomjs/hbuilderx/client" />` in the webview project's d.ts.

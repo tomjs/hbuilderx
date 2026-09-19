@@ -239,7 +239,7 @@ declare module 'hbuilderx' {
     /**
      * 设置状态栏消息
      */
-    setStatusBarMessage: (text: string, hideAfterTimeout: number, level: string) => Disposable;
+    setStatusBarMessage: (text: string, hideAfterTimeout?: number, level?: 'warn' | 'info' | 'error') => Disposable;
     /**
      * 清空状态栏消息
      */
@@ -378,6 +378,44 @@ declare module 'hbuilderx' {
      * 窗口中的子控件
      */
     formItems: FormItemOptions[];
+    /**
+     * 设置副标题是否自动打开链接（默认为 true）
+     */
+    subtitleLinkAutoOpen?: boolean;
+    /**
+     * 设置底部文本是否自动打开链接（默认为 true）
+     */
+    footerLinkAutoOpen?: boolean;
+    /**
+     * 设置错误提示标签是否自动打开链接（默认为 true）
+     */
+    errorLinkAutoOpen?: boolean;
+    /**
+     * 校验输入，返回 false 时阻止提交。回调内 this 可调用 showError
+     */
+    validate?: (this: FormDialogContext, formData: Record<string, any>) => boolean;
+    /**
+     * 控件值变化时触发，用于更新控件。回调内 this 可调用 updateForm
+     */
+    onChanged?: (this: FormDialogContext, field: string, value: any) => void;
+    /**
+     * 窗口 UI 加载完成后触发，用于加载数据
+     */
+    onOpened?: (this: FormDialogContext) => void;
+  }
+
+  /**
+   * showFormDialog 回调（validate/onChanged/onOpened）内的 this 上下文
+   */
+  interface FormDialogContext {
+    /**
+     * 在窗口中显示错误提示（validate 中使用）
+     */
+    showError: (message: string) => void;
+    /**
+     * 更新表单控件（onChanged 中使用）
+     */
+    updateForm: (data: Partial<FormDialogOptions>) => void;
   }
 
   interface FormItemOptions {
@@ -385,47 +423,128 @@ declare module 'hbuilderx' {
      * formDialog中的子控件类型
      * - label: 标签卡
      * - input: 输入框
-     * - fileSelectInput: 文件夹选择框
+     * - fileSelectInput: 文件/文件夹选择框
      * - radioGroup: 单选按钮组
      * - list: 列表控件
      * - checkBox: 复选框控件
      * - spaceList: 云服务空间列表
+     * - textEditor: 文本编辑器
+     * - comboBox: 组合下拉框
+     * - widgetGroup: 组合控件（横向布局容器）
+     * - button: 普通按钮（widgetGroup 子控件）
+     * - radioButton: 单选按钮（widgetGroup 子控件）
      */
-    type: 'label' | 'input' | 'fileSelectInput' | 'radioGroup' | 'list' | 'checkBox' | 'spaceList';
+    type: 'label' | 'input' | 'fileSelectInput' | 'radioGroup' | 'list' | 'checkBox' | 'spaceList' | 'textEditor' | 'comboBox' | 'widgetGroup' | 'button' | 'radioButton';
     /**
      * 控件的唯一标识
      */
-    name: string;
+    name?: string;
     /**
-     * 文件输入框的模式
-     * - file: 文件选择框
-     * - folder: 文件夹选择框
+     * 文件/输入框的模式
+     * - file/folder: 文件、文件夹选择框
+     * - normal/password: 输入框模式
      */
-    mode: 'file' | 'folder';
+    mode?: 'file' | 'folder' | 'normal' | 'password';
     /**
-     * label的描述文字
+     * label/textEditor/comboBox 的文字或内容
      */
-    text: string;
+    text?: string;
     /**
      * 各个控件可设置的说明文字
      */
-    label: string;
+    label?: string;
     /**
      * 输入框中没有文字时的提示文字
      */
-    placeholder: string;
+    placeholder?: string;
     /**
-     * 列表外部存在一个 group, 这是 group 的标题
+     * 列表/textEditor 外部 group 的标题
      */
-    title: string;
+    title?: string;
     /**
      * 列表各个列的宽度比例
      */
-    columnStretches: string;
+    columnStretches?: string | number[];
     /**
      * 各个控件的值, 类型不定
      */
-    value: any;
+    value?: any;
+    /**
+     * 输入框是否禁用，默认 false
+     */
+    disabled?: boolean;
+    /**
+     * 文件过滤，当 mode 为 file 时生效
+     */
+    filters?: string[];
+    /**
+     * radioGroup/list/comboBox 的选项数据
+     */
+    items?: any[];
+    /**
+     * list 单行的列数据
+     */
+    columns?: any[];
+    /**
+     * list 是否允许多选
+     */
+    multiSelection?: boolean;
+    /**
+     * list 是否可刷新
+     */
+    refreshable?: boolean;
+    /**
+     * list 搜索设置
+     */
+    searchable?: boolean;
+    /**
+     * list 要搜索的列，如 [1, 2]
+     */
+    searchColumns?: number[];
+    /**
+     * textEditor 编辑语言 id，提供代码高亮
+     */
+    languageId?: string;
+    /**
+     * comboBox 是否可编辑，默认 false
+     */
+    editable?: boolean;
+    /**
+     * comboBox 当前索引（editable 为 false 时可设置）
+     */
+    index?: number;
+    /**
+     * widgetGroup 内的子控件数组
+     */
+    widgets?: FormItemOptions[];
+    /**
+     * radioGroup（widgetGroup 内）存放的一组 radioButton
+     */
+    radios?: FormItemOptions[];
+    /**
+     * radioGroup 选中的单选按钮名称
+     */
+    checkedRadio?: string;
+    /**
+     * radioGroup 布局方向，默认横向
+     */
+    layout?: 'horizontal' | 'vertical';
+    /**
+     * label 文本是否可选中
+     */
+    canSelect?: boolean;
+    /**
+     * radioButton/checkBox 是否选中
+     */
+    checked?: boolean;
+    /**
+     * button 大小等级，默认 normal
+     */
+    size?: 'small' | 'normal' | 'large';
+    /**
+     * radioGroup items 中单选项的唯一标识
+     */
+    id?: string;
   }
 
   interface WebView {
@@ -783,6 +902,14 @@ declare module 'hbuilderx' {
 
   interface StatusBarItem {
     /**
+     * 状态栏元素对齐方式
+     */
+    alignment: StatusBarAlignment;
+    /**
+     * 状态栏元素优先级。值越高，表示元素应显示得越靠左
+     */
+    priority: number;
+    /**
      * 显示的文本，支持 $(icon-name) 图标，需在 contributes/icons 配置
      */
     text: string;
@@ -890,11 +1017,11 @@ declare module 'hbuilderx' {
     /**
      * 根据指定的section获取配置项的值
      */
-    get: (section: string, defaultValue?: string | number | boolean) => string;
+    get: (section: string, defaultValue?: any) => any;
     /**
      * 更新指定section的配置项
      */
-    update: (section: string, value: string | number | boolean) => Promise<void>;
+    update: (section: string, value: any) => Promise<void>;
   }
 
   interface CommandManager {
