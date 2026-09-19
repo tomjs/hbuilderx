@@ -1,3 +1,7 @@
+## [2.1.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%402.0.0...hbuilderx%402.1.0) (2026-09-19)
+
+- feat: 更新同步 hbuilderx 定义  [9b884de](https://github.com/tomjs/hbuilderx/commit/9b884de)
+
 ## [2.0.0](https://github.com/tomjs/hbuilderx/compare/hbuilderx%401.2.0...hbuilderx%402.0.0) (2026-09-05)
 
 - feat: 补充新的 hbuilderx 定义  [f120a99](https://github.com/tomjs/hbuilderx/commit/f120a99)
