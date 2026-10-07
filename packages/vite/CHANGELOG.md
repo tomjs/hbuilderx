@@ -1,3 +1,7 @@
+## [2.2.0](https://github.com/tomjs/hbuilderx/compare/vite%402.1.1...vite%402.2.0) (2026-10-07)
+
+- fix:  HBuilderX alpha(5.31) window.hbuilderx 问题  [837bff5](https://github.com/tomjs/hbuilderx/commit/837bff5)
+
 ## [2.1.1](https://github.com/tomjs/hbuilderx/compare/vite%402.1.0...vite%402.1.1) (2026-09-11)
 
 - fix: 支持复制粘贴快捷键  [3be850d](https://github.com/tomjs/hbuilderx/commit/3be850d)
